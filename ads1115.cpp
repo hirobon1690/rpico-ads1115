@@ -14,10 +14,10 @@ void adc::init(){
 }
 
 int adc::read(){
-    i2c.write(ADDR,conf,3);
+    i2c_write_blocking(i2c0,ADDR,conf,3,true);
     uint8_t result[2];
     uint8_t data=0b00000000;
     i2c_write_blocking(i2c0,ADDR,&data,1,true);
     i2c_read_blocking(i2c0,ADDR,result,2,true);
-    return (result[0]<<4)|(result[1]>>4);
+    return (int16_t)((result[0] << 8) | result[1]);
 }
